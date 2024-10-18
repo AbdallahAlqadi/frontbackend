@@ -1,45 +1,57 @@
 /* تحسين التصميم العام */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f0f0f0; /* لون خلفية أفتح */
+    background: linear-gradient(135deg, #e8eaf6 0%, #f7f9fc 100%); /* تدرج لوني للخلفية */
     color: #333; /* لون نص أكثر وضوحًا */
     margin: 0; /* إزالة الهوامش الافتراضية */
 }
 
 /* تصميم الرأس */
 header {
-    background-color: #4CAF50; /* لون خلفية رأس مختلف */
-    color: white;
-    padding: 20px 0;
+    background-image: url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800'), linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    color: #fff;
+    padding: 40px 0; /* زيادة padding */
     text-align: center;
+    padding-top: 6%;
 }
 
-/* تصميم الشعار */
-header img {
-    width: 120px; /* زيادة عرض الشعار */
-    height: auto;
-    margin-bottom: 15px; /* زيادة المسافة بين الشعار والعنوان */
-}
+
 
 /* تصميم المحتوى الرئيسي */
 main {
-    padding: 20px;
+    padding: 40px; /* زيادة padding */
     display: flex; /* استخدام flexbox */
     flex-direction: column; /* تحديد الاتجاه العمودي */
     align-items: center; /* محاذاة العناصر في المركز */
 }
 
+/* تحسين قسم العناصر */
+#a {
+    background-color: #ffffff; /* لون خلفية أبيض */
+    padding: 30px; /* زيادة padding */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* تأثير ظل أكثر وضوحًا */
+    text-align: center;
+    margin-bottom: 40px; /* زيادة المسافة بين العناصر */
+    border-radius: 15px; /* زوايا دائرية */
+    transition: transform 0.3s, box-shadow 0.3s; /* تأثير الانتقال */
+}
+
+#a:hover {
+    transform: translateY(-5px); /* رفع العنصر عند المرور فوقه */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* زيادة تأثير الظل عند المرور */
+}
+
 /* تصميم قسم الدورات */
 .course {
-    background-color: white;
+    background-color: #ffffff; /* لون خلفية أبيض */
     border: 1px solid #ddd;
-    padding: 15px;
-    margin: 15px 0;
-    border-radius: 8px; /* زوايا دائرية */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل أعمق */
-    transition: transform 0.3s; /* تأثير عند تمرير الماوس */
+    padding: 25px; /* زيادة padding */
+    margin: 20px 0;
+    border-radius: 10px; /* زوايا دائرية */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* ظل أعمق */
+    transition: transform 0.3s, box-shadow 0.3s; /* تأثير عند تمرير الماوس */
     width: 100%; /* عرض كامل */
-    max-width: 300px; /* أقصى عرض */
+    max-width: 350px; /* أقصى عرض */
     display: flex; /* استخدام الفلكس */
     flex-direction: column; /* لتحديد الاتجاه العمودي */
     justify-content: center; /* محاذاة عمودية */
@@ -50,36 +62,40 @@ main {
 .course img {
     width: 100%; /* عرض كامل للصورة */
     height: auto;
-    border-radius: 5px; /* زوايا دائرية للصورة */
+    border-radius: 10px; /* زوايا دائرية للصورة */
 }
 
 /* تأثير تمرير الماوس على الدورات */
 .course:hover {
-    transform: scale(1.02); /* تكبير خفيف عند التمرير */
+    transform: scale(1.05); /* تكبير خفيف عند التمرير */
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* تأثير ظل عند التمرير */
 }
 
 /* تصميم الأزرار */
 button {
-    background-color: #4CAF50;
+    background-color: #673ab7; /* لون زر ثابت */
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 15px 30px; /* زيادة padding */
     cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s; /* تأثير سلس عند التمرير */
-    margin-top: 10px; /* مسافة أعلى الزر */
+    border-radius: 8px; /* زوايا دائرية */
+    transition: background-color 0.3s, transform 0.2s; /* تأثير سلس عند التمرير */
+    margin-top: 15px; /* مسافة أعلى الزر */
+    font-weight: bold; /* جعل النص أكثر وضوحًا */
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #5e35b1; /* لون أغمق عند التمرير */
+    transform: translateY(-3px); /* رفع الزر عند التمرير */
 }
 
 /* تصميم الفوتر */
 footer {
     text-align: center;
-    padding: 20px 0;
-    background-color: #333;
-    color: white;
+    padding: 40px 0; /* زيادة padding */
+    background-image: url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800'), linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    color: #fff;
+    margin-top: 20px; /* مساحة فوق الفوتر */
 }
 
 /* Media queries for responsiveness */
@@ -95,6 +111,10 @@ footer {
     }
 
     header img {
-        width: 100px; /* تقليل حجم الشعار في الجوال */
+        width: 130px; /* تقليل حجم الشعار في الجوال */
+    }
+
+    button {
+        padding: 12px 25px; /* تقليل حجم الزر في الجوال */
     }
 }

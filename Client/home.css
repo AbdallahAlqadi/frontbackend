@@ -8,11 +8,21 @@ body {
 
 /* تصميم الرأس */
 header {
-    background-image: url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800'), linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+    background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.315), rgba(0, 0, 0, 0.383)), 
+        url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800');
     color: #fff;
-    padding: 40px 0; /* زيادة padding */
+    padding: 60px 20px; /* زيادة padding العلوي والجانبي */
     text-align: center;
-    padding-top: 6%;
+    background-size: cover; /* تغطية المساحة بالكامل */
+    background-position: center; /* تمركز الصورة */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* إضافة ظل لجعل الرأس يبرز */
+    position: relative; /* إعدادات إضافية للعناصر الفرعية إذا كنت بحاجة إليها */
+}
+#login{
+    text-decoration: none;
+    color: #e8eaf6;
+    font-size: x-large;
 }
 
 
@@ -93,9 +103,12 @@ button:hover {
 footer {
     text-align: center;
     padding: 40px 0; /* زيادة padding */
-    background-image: url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800'), linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
-    color: #fff;
+    background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.315), rgba(0, 0, 0, 0.383)), 
+    url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800');    color: #fff;
     margin-top: 20px; /* مساحة فوق الفوتر */
+    background-position: center; /* تمركز الصورة */
+
 }
 
 /* Media queries for responsiveness */

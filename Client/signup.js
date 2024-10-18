@@ -2,9 +2,9 @@ var form = document.getElementById('form');
 
 // post
 form.addEventListener('submit', async function (e) {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
 
-    // Get the current values from the fields
+    
     const userData = {
         name: document.getElementById('name').value,
         email: document.getElementById('email').value,

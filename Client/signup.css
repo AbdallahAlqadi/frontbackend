@@ -20,8 +20,15 @@ body {
    
     padding: 50px;
     border-radius: 15px;
-    box-shadow: 0 6px 40px rgba(0, 0, 0, 1);
+    box-shadow: 0 4px 20px rgba(202, 198, 198, 0.9); /* Softer shadow */
     width: 33%;
+    
+    background-size: cover; /* تغطية المساحة بالكامل */
+    background-position: center; 
+    background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.315), rgba(0, 0, 0, 0.383)), 
+      
+    url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800');
 }
 
 /* Updated Typography */

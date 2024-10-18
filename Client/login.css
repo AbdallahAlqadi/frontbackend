@@ -1,18 +1,22 @@
 body {
-    background-image: url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800'), linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8));
-
+    background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.315), rgba(0, 0, 0, 0.383)), 
+        url('https://img.pikbest.com/wp/202405/pile-of-books-academic-tools-and-piles-in-3d-render-a-back-to-school-education-background-image_9854761.jpg!bwr800');
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;  
     margin: 0;
+    background-size: cover; /* تغطية المساحة بالكامل */
+    background-position: center; /* تمركز الصورة */
+
 }
 
 .login-container {
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 1.9);
+    box-shadow: 0 4px 20px rgba(202, 198, 198, 0.9); /* Softer shadow */
 width: 35%;
 height: 45%;}
 

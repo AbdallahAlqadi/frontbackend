@@ -1,0 +1,100 @@
+/* تحسين التصميم العام */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f0f0f0; /* لون خلفية أفتح */
+    color: #333; /* لون نص أكثر وضوحًا */
+    margin: 0; /* إزالة الهوامش الافتراضية */
+}
+
+/* تصميم الرأس */
+header {
+    background-color: #4CAF50; /* لون خلفية رأس مختلف */
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+/* تصميم الشعار */
+header img {
+    width: 120px; /* زيادة عرض الشعار */
+    height: auto;
+    margin-bottom: 15px; /* زيادة المسافة بين الشعار والعنوان */
+}
+
+/* تصميم المحتوى الرئيسي */
+main {
+    padding: 20px;
+    display: flex; /* استخدام flexbox */
+    flex-direction: column; /* تحديد الاتجاه العمودي */
+    align-items: center; /* محاذاة العناصر في المركز */
+}
+
+/* تصميم قسم الدورات */
+.course {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px; /* زوايا دائرية */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* ظل أعمق */
+    transition: transform 0.3s; /* تأثير عند تمرير الماوس */
+    width: 100%; /* عرض كامل */
+    max-width: 300px; /* أقصى عرض */
+    display: flex; /* استخدام الفلكس */
+    flex-direction: column; /* لتحديد الاتجاه العمودي */
+    justify-content: center; /* محاذاة عمودية */
+    align-items: center; /* محاذاة أفقية */
+}
+
+/* تحسين الصورة في الدورات */
+.course img {
+    width: 100%; /* عرض كامل للصورة */
+    height: auto;
+    border-radius: 5px; /* زوايا دائرية للصورة */
+}
+
+/* تأثير تمرير الماوس على الدورات */
+.course:hover {
+    transform: scale(1.02); /* تكبير خفيف عند التمرير */
+}
+
+/* تصميم الأزرار */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s; /* تأثير سلس عند التمرير */
+    margin-top: 10px; /* مسافة أعلى الزر */
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* تصميم الفوتر */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    background-color: #333;
+    color: white;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 768px) {
+    main {
+        flex-direction: column; /* احتفاظ بالاتجاه العمودي في الشاشات الصغيرة */
+        align-items: center; /* محاذاة العناصر في المركز */
+    }
+
+    .course {
+        width: 90%; /* عرض كامل للدورات في الشاشات الصغيرة */
+        max-width: none; /* إزالة الحد الأقصى */
+    }
+
+    header img {
+        width: 100px; /* تقليل حجم الشعار في الجوال */
+    }
+}

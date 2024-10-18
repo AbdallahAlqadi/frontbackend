@@ -17,7 +17,9 @@ form.addEventListener('submit', async function (e) {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
+            
         });
+        alert("sucssfull")
 
         if (!response.ok) throw new Error(`Error: ${response.status}`);
 

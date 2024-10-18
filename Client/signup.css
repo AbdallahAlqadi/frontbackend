@@ -34,18 +34,18 @@ h1 {
     font-family: 'Georgia', serif;
 }
 
-.signup-form {
+#form {
     display: flex;
     flex-direction: column;
 }
 
-.signup-form label {
+#form label {
     margin-bottom: 8px;
     color: #ebeff3; /* Dark gray */
     font-weight: 600;
 }
 
-.signup-form input {
+#form input {
     padding: 14px;
     margin-bottom: 25px;
     border: 1px solid #ccc; /* Light gray */
@@ -54,13 +54,13 @@ h1 {
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.signup-form input:focus {
+#form input:focus {
     outline: none;
     border-color: #3498db; /* Light blue */
     box-shadow: 0 0 10px rgba(52, 152, 219, 0.5);
 }
 
-.signup-form button {
+#form button {
     background-color: #2794dd; /* Blue */
     color: #fff;
     padding: 14px;
@@ -72,7 +72,7 @@ h1 {
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s; /* Added shadow transition */
 }
 
-.signup-form button:hover {
+#form button:hover {
     background-color: #1f6392; /* Darker blue */
     transform: scale(1.05);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
@@ -89,8 +89,8 @@ h1 {
         font-size: 26px;
     }
 
-    .signup-form input,
-    .signup-form button {
+  #form input,
+    #form button {
         font-size: 14px;
     }
 }

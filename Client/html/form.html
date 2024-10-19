@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نموذج تحميل الفيديو</title>
+    <link rel="stylesheet" href="../css/form.css">
+</head>
+<body>
+    <div class="container">
+        <h1>تحميل فيديو</h1>
+        <form id="videoForm">
+            <label for="videoTitle">موضوع الفيديو:</label>
+            <input type="text" id="videoTitle" name="videoTitle" required>
+            
+            <label for="videoFile">تحميل الفيديو:</label>
+            <input type="file" id="videoFile" name="videoFile"  required>
+            
+            <button type="submit">إرسال</button>
+        </form>
+        <div id="message"></div>
+    </div>
+
+    <script src="../js/form.js"></script>
+</body>
+</html>

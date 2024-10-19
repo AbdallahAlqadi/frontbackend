@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #e9ecef; /* خلفية بلون رمادي فاتح */
     margin: 0;
     padding: 0;
 }
@@ -10,18 +10,20 @@ body {
     margin: 50px auto;
     padding: 20px;
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* زيادة الزوايا المدورة */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15); /* ظلال أعمق */
     transition: all 0.3s ease;
 }
 
 .container:hover {
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3); /* تأثير الظل عند التمرير */
 }
 
 h1 {
     text-align: center;
     color: #333;
+    font-size: 24px; /* زيادة حجم الخط */
+    margin-bottom: 20px; /* إضافة فراغ أسفل العنوان */
 }
 
 label {
@@ -35,33 +37,35 @@ input[type="text"],
 input[type="file"],
 button {
     width: 90%;
-    padding: 12px;
-    margin: 15px 12px;
+    padding: 15px; /* زيادة مساحة التباعد */
+    margin: 15px 8px; /* محاذاة تلقائية */
     border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    transition: border-color 0.3s ease;
+    border-radius: 6px; /* زيادة الزوايا المدورة */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* تأثيرات انتقال */
 }
 
 input[type="text"]:focus,
 input[type="file"]:focus {
     border-color: #5cb85c; /* لون الحدود عند التركيز */
-}
+    box-shadow: 0 0 5px rgba(92, 184, 92, 0.5); /* تأثير ظلال عند التركيز */
+ }
 
 button {
-    background-color: #5cb85c;
+    background-color: #28a745; /* لون خلفية الزر */
     color: white;
     border: none;
     cursor: pointer;
     font-size: 16px;
-    margin-left:19px;
     font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* تأثيرات انتقال للزر */
+    margin-left: 20px;
 }
 
 button:hover {
-    background-color: #4cae4c;
-    transform: translateY(-2px); /* تأثير رفع خفيف عند التمرير */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: #218838; /* تغيير لون الزر عند التمرير */
+    transform: translateY(-3px); /* تأثير رفع أقوى عند التمرير */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 #message {

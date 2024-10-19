@@ -17,28 +17,34 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // POST endpoint to handle video upload
-exports.createData = upload.single('videoFile'), async (req, res) => {
-    const videoTitle = req.body.videoTitle; // Access video title
-    const videoFile = req.file; // Access uploaded video file
+exports.createData = async (req, res) => {
+    upload.single('videoFile')(req, res, async (err) => {
+        if (err) {
+            return res.status(400).json({ message: 'File upload error: ' + err.message });
+        }
 
-    // Check if the file is uploaded
-    if (!videoFile) {
-        return res.status(400).json({ message: 'No file uploaded' });
-    }
+        const videoTitle = req.body.videoTitle; // Access video title
+        const videoFile = req.file; // Access uploaded video file
 
-    try {
-        const newData = {
-            videoTitle,
-            videoFile: videoFile.path // Save the path of the file in the database
-        };
+        // Check if the file is uploaded
+        if (!videoFile) {
+            return res.status(400).json({ message: 'No file uploaded' });
+        }
 
-        console.log('New Data:', newData); // Log the new data for debugging
+        try {
+            const newData = {
+                videoTitle,
+                videoFile: videoFile.path // Save the path of the file in the database
+            };
 
-        const dbData = await Data.create(newData); // Save to the database
+            console.log('New Data:', newData); // Log the new data for debugging
 
-        res.status(200).json({ message: `User created successfully: ${dbData}` });
-    } catch (error) {
-        console.error('Error while creating data:', error); // Log the error for debugging
-        res.status(500).json({ message: error.message }); // Return a 500 error response
-    }
+            const dbData = await Data.create(newData); // Save to the database
+
+            res.status(200).json({ message: `User created successfully: ${dbData}` });
+        } catch (error) {
+            console.error('Error while creating data:', error); // Log the error for debugging
+            res.status(500).json({ message: error.message }); // Return a 500 error response
+        }
+    });
 };

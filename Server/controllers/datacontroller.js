@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// إعداد multer للتعامل مع تحميل الملفات
+// Setup multer for file uploads
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadPath = path.join(__dirname, 'uploads');
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        // تطهير اسم الملف مع إضافة timestamp لتجنب التكرار
+        // Sanitize filename and add timestamp to avoid duplicates
         const sanitizedFileName = file.originalname.replace(/\s+/g, '_').replace(/[^\w-_.]/g, '');
         const fileExt = path.extname(sanitizedFileName);
         const fileNameWithoutExt = path.basename(sanitizedFileName, fileExt);
@@ -22,40 +22,31 @@ const storage = multer.diskStorage({
     }
 });
 
-// تصفية أنواع الملفات
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = [
-        'application/pdf', 
-        'application/vnd.ms-powerpoint', 
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation'
-    ];
-    if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true);
-    } else {
-        cb(new Error('نوع الملف غير مسموح به'), false);
-    }
-};
-
-// قيود الحجم (5 ميغابايت كحد أقصى)
+// Size limit (5 MB max)
 const upload = multer({ 
     storage, 
-    fileFilter, 
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB 
 });
 
-// نقطة النهاية POST لمعالجة تحميل الملفات
+// POST endpoint to handle file uploads
 exports.createData = async (req, res) => {
     upload.single('file')(req, res, async (err) => {
         if (err) {
             console.error('Error during file upload:', err);
-            return res.status(400).json({ message: 'خطأ في تحميل الملف: ' + err.message });
+            if (err instanceof multer.MulterError) {
+                // A Multer error occurred when uploading.
+                return res.status(400).json({ message: 'خطأ في تحميل الملف: ' + err.message });
+            } else {
+                // An unknown error occurred when uploading.
+                return res.status(400).json({ message: 'خطأ غير معروف في تحميل الملف: ' + err.message });
+            }
         }
 
-        const fileTitle = req.body.fileTitle?.trim(); // تأكد من استخدام عنوان الملف بشكل صحيح
-        const uploadedFile = req.file; // استخدام req.file للحصول على الملف المرفوع
+        const fileTitle = req.body.fileTitle?.trim(); // Ensure proper use of file title
+        const uploadedFile = req.file; // Use req.file to get the uploaded file
 
         if (!fileTitle || !uploadedFile) {
-            return res.status(400).json({ message: 'يرجى التأكد من إدخال عنوان الملف واختيار ملف.' });
+            return res.status(400).json({ message: 'يرجى التأكد من إدخال عنوان الملف واختيار ملف.' }); // Ensure title and file are provided
         }
 
         try {
@@ -69,7 +60,7 @@ exports.createData = async (req, res) => {
 
             res.status(200).json({ message: 'تم تحميل الملف بنجاح', data: { fileTitle: dbData.fileTitle, uploadedFile: dbData.uploadedFile } });
         } catch (error) {
-            console.error('خطأ أثناء إنشاء البيانات:', error);
+            console.error('Error creating data:', error);
             res.status(500).json({ message: 'خطأ في قاعدة البيانات: ' + error.message });
         }
     });

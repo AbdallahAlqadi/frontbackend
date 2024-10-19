@@ -47,8 +47,8 @@ exports.createData = async (req, res) => {
             return res.status(400).json({ message: 'خطأ في تحميل الملف: ' + err.message });
         }
 
-        const fileTitle = req.body.fileTitle;
-        const uploadedFile = req.file;
+        const fileTitle = req.body.fileTitle; // تأكد من استخدام عنوان الملف بشكل صحيح
+        const uploadedFile = req.file; // استخدام req.file للحصول على الملف المرفوع
 
         if (!fileTitle || !uploadedFile) {
             return res.status(400).json({ message: 'يرجى التأكد من إدخال عنوان الملف واختيار ملف.' });

@@ -65,3 +65,24 @@ exports.createData = async (req, res) => {
         }
     });
 };
+
+
+
+
+// get
+// GET endpoint to retrieve uploaded files
+exports.getData = async (req, res) => {
+    try {
+        // Fetch all records from the database
+        const dataRecords = await Data.find(); // Assuming Data is your Mongoose model
+
+        if (dataRecords.length === 0) {
+            return res.status(404).json({ message: 'لا توجد ملفات تم تحميلها بعد.' }); // No files found
+        }
+
+        res.status(200).json({ message: 'تم استرجاع الملفات بنجاح', data: dataRecords });
+    } catch (error) {
+        console.error('Error retrieving data:', error);
+        res.status(500).json({ message: 'خطأ في قاعدة البيانات: ' + error.message });
+    }
+};

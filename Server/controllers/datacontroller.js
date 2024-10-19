@@ -13,17 +13,21 @@ const storage = multer.diskStorage({
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        const sanitizedFileName = file.originalname.replace(/\s+/g, '_').replace(/[^\w-_.]/g, ''); // تطهير اسم الملف
-        cb(null, sanitizedFileName);
+        // تطهير اسم الملف مع إضافة timestamp لتجنب التكرار
+        const sanitizedFileName = file.originalname.replace(/\s+/g, '_').replace(/[^\w-_.]/g, '');
+        const fileExt = path.extname(sanitizedFileName);
+        const fileNameWithoutExt = path.basename(sanitizedFileName, fileExt);
+        const uniqueFileName = `${fileNameWithoutExt}_${Date.now()}${fileExt}`;
+        cb(null, uniqueFileName);
     }
 });
 
 // تصفية أنواع الملفات
 const fileFilter = (req, file, cb) => {
     const allowedTypes = [
-        'application/pdf', // نوع ملف PDF
-        'application/vnd.ms-powerpoint', // نوع ملف PPT
-        'application/vnd.openxmlformats-officedocument.presentationml.presentation' // نوع ملف PPTX
+        'application/pdf', 
+        'application/vnd.ms-powerpoint', 
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation'
     ];
     if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
@@ -47,7 +51,7 @@ exports.createData = async (req, res) => {
             return res.status(400).json({ message: 'خطأ في تحميل الملف: ' + err.message });
         }
 
-        const fileTitle = req.body.fileTitle; // تأكد من استخدام عنوان الملف بشكل صحيح
+        const fileTitle = req.body.fileTitle?.trim(); // تأكد من استخدام عنوان الملف بشكل صحيح
         const uploadedFile = req.file; // استخدام req.file للحصول على الملف المرفوع
 
         if (!fileTitle || !uploadedFile) {
@@ -66,7 +70,7 @@ exports.createData = async (req, res) => {
             res.status(200).json({ message: 'تم تحميل الملف بنجاح', data: { fileTitle: dbData.fileTitle, uploadedFile: dbData.uploadedFile } });
         } catch (error) {
             console.error('خطأ أثناء إنشاء البيانات:', error);
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ message: 'خطأ في قاعدة البيانات: ' + error.message });
         }
     });
 };

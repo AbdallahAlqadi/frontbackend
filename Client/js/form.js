@@ -37,10 +37,14 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
 
     // إذا كانت كل الفحوصات ناجحة
     const formData = new FormData();
-    formData.append('fileTitle', fileTitle);
-    formData.append('file', uploadedFile);
+    formData.append('fileTitle', fileTitle); // إرفاق عنوان الملف
+    formData.append('file', uploadedFile); // إرفاق الملف
 
     document.getElementById('message').innerText = 'جاري تحميل الملف...'; // Uploading file...
+
+    // Disable the form elements while uploading
+    const submitButton = document.getElementById('submitButton');
+    submitButton.disabled = true;
 
     fetch('http://127.0.0.1:5005/api/data', {
         method: 'POST',
@@ -57,13 +61,16 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
     })
     .then(data => {
         document.getElementById('message').innerText = 'تم تحميل الملف بنجاح!';
-        
-        // Clear input fields
-        document.getElementById('fileTitle').value = '';
-        document.getElementById('fileInput').value = '';
+
+        // Clear input fields using form reset
+        document.getElementById('fileForm').reset();
     })
     .catch(error => {
         console.error('خطأ:', error);
         document.getElementById('message').innerText = 'حدث خطأ أثناء تحميل الملف. حاول مرة أخرى.'; // An error occurred while uploading the file. Try again.
+    })
+    .finally(() => {
+        // Re-enable the submit button after upload
+        submitButton.disabled = false;
     });
 });

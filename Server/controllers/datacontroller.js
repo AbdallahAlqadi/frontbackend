@@ -18,33 +18,33 @@ const upload = multer({ storage });
 
 // POST endpoint to handle video upload
 exports.createData = async (req, res) => {
-    upload.single('videoFile')(req, res, async (err) => {
+    upload.single('file')(req, res, async (err) => {
         if (err) {
-            return res.status(400).json({ message: 'File upload error: ' + err.message });
+            console.error('Error during file upload:', err);
+            return res.status(400).json({ message: 'خطأ في تحميل الملف: ' + err.message });
         }
 
-        const videoTitle = req.body.videoTitle; // Access video title
-        const videoFile = req.file; // Access uploaded video file
+        const fileTitle = req.body.fileTitle; // الوصول إلى عنوان الملف
+        const uploadedFile = req.file; // الوصول إلى الملف المرفوع
 
-        // Check if the file is uploaded
-        if (!videoFile) {
-            return res.status(400).json({ message: 'No file uploaded' });
+        if (!fileTitle || !uploadedFile) {
+            return res.status(400).json({ message: 'يرجى التأكد من إدخال عنوان الملف واختيار ملف.' });
         }
 
         try {
+            const relativePath = path.relative(process.cwd(), uploadedFile.path); 
+
             const newData = {
-                videoTitle,
-                videoFile: videoFile.path // Save the path of the file in the database
+                fileTitle,
+                uploadedFile: relativePath 
             };
 
-            console.log('New Data:', newData); // Log the new data for debugging
+            const dbData = await Data.create(newData); // Save in the database
 
-            const dbData = await Data.create(newData); // Save to the database
-
-            res.status(200).json({ message: `User created successfully: ${dbData}` });
+            res.status(200).json({ message: 'تم إنشاء المستخدم بنجاح', data: { fileTitle: dbData.fileTitle,uploadedFile:dbData.uploadedFile } });
         } catch (error) {
-            console.error('Error while creating data:', error); // Log the error for debugging
-            res.status(500).json({ message: error.message }); // Return a 500 error response
+            console.error('خطأ أثناء إنشاء البيانات:', error);
+            res.status(500).json({ message: error.message });
         }
     });
 };

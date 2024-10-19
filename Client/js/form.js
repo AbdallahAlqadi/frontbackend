@@ -64,3 +64,27 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
         submitButton.disabled = false;
     });
 });
+
+
+
+
+// Function to get data
+async function getData() {
+    try {
+        // Corrected the URL to include the protocol
+        const response = await fetch('http://127.0.0.1:5005/api/data');
+        const data = await response.json();
+        alert("sdasda");
+        // Assuming data is an array of user objects
+        data.forEach(user => {
+            // Corrected to use user.fileTitle
+            alert(user.fileTitle);
+        });
+
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+getData();
+

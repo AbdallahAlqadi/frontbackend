@@ -23,10 +23,15 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
         return;
     }
 
-    // يمكنك إضافة التحقق من نوع الملف هنا إذا لزم الأمر
-    const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf']; // أمثلة على أنواع الملفات المسموح بها
+    // التحقق من نوع الملف
+    const allowedTypes = [
+        'application/pdf', 
+        'application/vnd.ms-powerpoint', 
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation' // أنواع الملفات المسموح بها
+    ];
+
     if (!allowedTypes.includes(uploadedFile.type)) {
-        document.getElementById('message').innerText = 'نوع الملف غير مدعوم. يرجى اختيار ملف JPEG أو PNG أو PDF.'; // Unsupported file type. Please select a JPEG, PNG, or PDF file.
+        document.getElementById('message').innerText = 'نوع الملف غير مدعوم. يرجى اختيار ملف PDF أو PPT أو PPTX.'; // Unsupported file type. Please select a PDF, PPT, or PPTX file.
         return;
     }
 
@@ -44,19 +49,18 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
     .then(response => {
         // تحقق من حالة الاستجابة
         if (!response.ok) {
-            throw new Error('استجابة غير متوقعة من الخادم'); // Unexpected response from the server
-        }
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-            throw new Error('استجابة غير متوقعة من الخادم'); // Unexpected response from the server
+            return response.json().then(err => {
+                throw new Error(err.message || 'استجابة غير متوقعة من الخادم'); // Handle server error response
+            });
         }
         return response.json();
     })
     .then(data => {
         document.getElementById('message').innerText = 'تم تحميل الملف بنجاح!';
         
-        console.log(formData)
-        // File uploaded successfully
+        // Clear input fields
+        document.getElementById('fileTitle').value = '';
+        document.getElementById('fileInput').value = '';
     })
     .catch(error => {
         console.error('خطأ:', error);

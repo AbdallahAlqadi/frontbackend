@@ -104,3 +104,16 @@ exports.getData = async (req, res) => {
         });
     }
 };
+
+
+
+
+exports.DeleteData = async (req, res) => {
+    try {
+      const id = req.params.id;
+      const deletedata = await Data.findOneAndDelete({ _id: id }); // شرط الحذف بناءً على id
+      res.status(200).json(deletedata);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };

@@ -91,42 +91,34 @@ async function getData() {
             const fragment = document.createDocumentFragment();
 
             data.data.forEach(file => {
-                const fileCard = document.createElement('div');
-                fileCard.classList.add('file-card');
-
-                const titleHeading = document.createElement('h1');
-                titleHeading.textContent = `Title: ${file.fileTitle}`;
-                fileCard.appendChild(titleHeading);
-
                 const fileType = file.uploadedFile.split('.').pop().toLowerCase();
+                let fileCardContent = '';
 
                 if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
-                    const img = document.createElement('img');
-                    img.src = file.uploadedFile;
-                    img.alt = file.fileTitle;
-                    img.onerror = function() {
-                        this.src = 'fallback-image.jpg'; // Use a specific fallback image
-                    };
-                    fileCard.appendChild(img);
+                    fileCardContent = `
+                        <h1>Title: ${file.fileTitle}</h1>
+                        <img src="${file.uploadedFile}" alt="${file.fileTitle}" onerror="this.src='fallback-image.jpg';">
+                    `;
                 } else if (['txt', 'doc', 'docx', 'pdf'].includes(fileType)) {
-                    const downloadLink = document.createElement('a');
-                    downloadLink.href = file.uploadedFile;
-                    downloadLink.textContent = `Download ${file.fileTitle}`;
-                    downloadLink.setAttribute('download', '');
-                    fileCard.appendChild(downloadLink);
-
+                    fileCardContent = `
+                        <h1>Title: ${file.fileTitle}</h1>
+                        <a href="${file.uploadedFile}" download>Download ${file.fileTitle}</a>
+                    `;
                     if (fileType === 'pdf') {
-                        const iframe = document.createElement('iframe');
-                        iframe.src = file.uploadedFile;
-                        iframe.style.width = '100%';
-                        iframe.style.height = '300px';
-                        fileCard.appendChild(iframe);
+                        fileCardContent += `
+                            <iframe src="${file.uploadedFile}" style="width: 100%; height: 300px;"></iframe>
+                        `;
                     }
                 } else {
-                    const unsupportedFileMessage = document.createElement('p');
-                    unsupportedFileMessage.textContent = `Cannot display this file type: ${fileType}`;
-                    fileCard.appendChild(unsupportedFileMessage);
+                    fileCardContent = `
+                        <h1>Title: ${file.fileTitle}</h1>
+                        <p>Cannot display this file type: ${fileType}</p>
+                    `;
                 }
+
+                const fileCard = document.createElement('div');
+                fileCard.classList.add('file-card');
+                fileCard.innerHTML = fileCardContent;
 
                 fragment.appendChild(fileCard);
             });

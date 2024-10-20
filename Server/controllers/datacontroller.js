@@ -29,24 +29,19 @@ const upload = multer({
 });
 
 // POST endpoint to handle file uploads
+// POST endpoint to handle file uploads
 exports.createData = async (req, res) => {
     upload.single('file')(req, res, async (err) => {
         if (err) {
             console.error('Error during file upload:', err);
-            if (err instanceof multer.MulterError) {
-                // A Multer error occurred when uploading.
-                return res.status(400).json({ message: 'خطأ في تحميل الملف: ' + err.message });
-            } else {
-                // An unknown error occurred when uploading.
-                return res.status(400).json({ message: 'خطأ غير معروف في تحميل الملف: ' + err.message });
-            }
+            // ... error handling
         }
 
-        const fileTitle = req.body.fileTitle?.trim(); // Ensure proper use of file title
-        const uploadedFile = req.file; // Use req.file to get the uploaded file
+        const fileTitle = req.body.fileTitle?.trim();
+        const uploadedFile = req.file;
 
         if (!fileTitle || !uploadedFile) {
-            return res.status(400).json({ message: 'يرجى التأكد من إدخال عنوان الملف واختيار ملف.' }); // Ensure title and file are provided
+            return res.status(400).json({ message: 'يرجى التأكد من إدخال عنوان الملف واختيار ملف.' });
         }
 
         try {
@@ -58,7 +53,17 @@ exports.createData = async (req, res) => {
 
             const dbData = await Data.create(newData);
 
-            res.status(200).json({ message: 'تم تحميل الملف بنجاح', data: { fileTitle: dbData.fileTitle, uploadedFile: dbData.uploadedFile } });
+            // Return the stored data, including the file content
+            const fileContent = fs.readFileSync(uploadedFile.path); // Read file content
+            const base64File = fileContent.toString('base64'); // Convert to base64 for frontend use
+
+            res.status(200).json({ 
+                message: 'تم تحميل الملف بنجاح', 
+                data: { 
+                    fileTitle: dbData.fileTitle, 
+                    uploadedFile: base64File // Send file as base64
+                } 
+            });
         } catch (error) {
             console.error('Error creating data:', error);
             res.status(500).json({ message: 'خطأ في قاعدة البيانات: ' + error.message });
@@ -76,13 +81,26 @@ exports.getData = async (req, res) => {
         // Fetch all records from the database
         const dataRecords = await Data.find(); // Assuming Data is your Mongoose model
 
-        if (dataRecords.length === 0) {
-            return res.status(404).json({ message: 'لا توجد ملفات تم تحميلها بعد.' }); // No files found
+        // If no records are found, return an empty array
+        if (!dataRecords || dataRecords.length === 0) {
+            return res.status(404).json({ 
+                success: false, 
+                message: 'لا توجد ملفات تم تحميلها بعد.', 
+                data: [] // Consistent response structure
+            });
         }
 
-        res.status(200).json({ message: 'تم استرجاع الملفات بنجاح', data: dataRecords });
+        // Return the retrieved records
+        res.status(200).json({ 
+            success: true, 
+            message: 'تم استرجاع الملفات بنجاح', 
+            data: dataRecords 
+        });
     } catch (error) {
         console.error('Error retrieving data:', error);
-        res.status(500).json({ message: 'خطأ في قاعدة البيانات: ' + error.message });
+        res.status(500).json({ 
+            success: false, 
+            message: 'خطأ في قاعدة البيانات: ' + error.message 
+        });
     }
 };

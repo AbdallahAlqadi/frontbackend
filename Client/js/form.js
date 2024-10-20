@@ -19,7 +19,7 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
     }
 
     // Check file size (max 5 MB)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    const maxSize = 30 * 1024 * 1024; // 5MB
     if (uploadedFile.size > maxSize) {
         messageElement.innerText = 'حجم الملف كبير جدًا. الحد الأقصى هو 5 ميغابايت.'; // The file is too large. Maximum size is 5MB
         return;
@@ -68,26 +68,78 @@ document.getElementById('fileForm').addEventListener('submit', function(event) {
 
 
 
-// Function to get data
 async function getData() {
-
-    var v =document.getElementById('v')
+    const v = document.getElementById('v');
     try {
-        // Corrected the URL to include the protocol
         const response = await fetch('http://127.0.0.1:5005/api/data');
+
+        // Check for a valid response
+        if (!response.ok) {
+            throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+
+        // Parse the JSON response
         const data = await response.json();
-     
-        // Assuming data is an array of user objects
-        data.forEach(user => {
-           v.innerHTML=`
-       
-           `
-        });
+
+        console.log('Response data:', data);
+
+        // Clear previous content
+        v.innerHTML = '';
+
+        // Check if the data structure is correct
+        if (data.success && Array.isArray(data.data)) {
+            const fragment = document.createDocumentFragment();
+
+            data.data.forEach(file => {
+                const fileCard = document.createElement('div');
+                fileCard.classList.add('file-card');
+
+                const titleHeading = document.createElement('h1');
+                titleHeading.textContent = `Title: ${file.fileTitle}`;
+                fileCard.appendChild(titleHeading);
+
+                const fileType = file.uploadedFile.split('.').pop().toLowerCase();
+
+                if (['jpg', 'jpeg', 'png', 'gif'].includes(fileType)) {
+                    const img = document.createElement('img');
+                    img.src = file.uploadedFile;
+                    img.alt = file.fileTitle;
+                    img.onerror = function() {
+                        this.src = 'fallback-image.jpg'; // Use a specific fallback image
+                    };
+                    fileCard.appendChild(img);
+                } else if (['txt', 'doc', 'docx', 'pdf'].includes(fileType)) {
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = file.uploadedFile;
+                    downloadLink.textContent = `Download ${file.fileTitle}`;
+                    downloadLink.setAttribute('download', '');
+                    fileCard.appendChild(downloadLink);
+
+                    if (fileType === 'pdf') {
+                        const iframe = document.createElement('iframe');
+                        iframe.src = file.uploadedFile;
+                        iframe.style.width = '100%';
+                        iframe.style.height = '300px';
+                        fileCard.appendChild(iframe);
+                    }
+                } else {
+                    const unsupportedFileMessage = document.createElement('p');
+                    unsupportedFileMessage.textContent = `Cannot display this file type: ${fileType}`;
+                    fileCard.appendChild(unsupportedFileMessage);
+                }
+
+                fragment.appendChild(fileCard);
+            });
+
+            v.appendChild(fragment);
+        } else {
+            v.innerHTML = '<p>Data received is not an array or is missing expected fields.</p>';
+        }
 
     } catch (error) {
         console.error('Error:', error);
+        v.innerHTML = `<p>Error fetching data: ${error.message}</p>`;
     }
 }
 
 getData();
-

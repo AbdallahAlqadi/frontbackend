@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Setup multer for file uploads
+// إعداد multer لرفع الملفات
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const uploadPath = path.join(__dirname, 'uploads');
@@ -13,28 +13,23 @@ const storage = multer.diskStorage({
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        // Sanitize filename and add timestamp to avoid duplicates
         const sanitizedFileName = file.originalname.replace(/\s+/g, '_').replace(/[^\w-_.]/g, '');
-        const fileExt = path.extname(sanitizedFileName);
-        const fileNameWithoutExt = path.basename(sanitizedFileName, fileExt);
-        const uniqueFileName = `${fileNameWithoutExt}_${Date.now()}${fileExt}`;
+        const uniqueFileName = `${Date.now()}_${sanitizedFileName}`;
         cb(null, uniqueFileName);
     }
 });
 
-// Size limit (5 MB max)
+// حجم الملف الأقصى (5 ميجابايت)
 const upload = multer({ 
     storage, 
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB 
 });
 
-// POST endpoint to handle file uploads
-// POST endpoint to handle file uploads
+// POST endpoint لمعالجة رفع الملفات
 exports.createData = async (req, res) => {
     upload.single('file')(req, res, async (err) => {
         if (err) {
-            console.error('Error during file upload:', err);
-            // ... error handling
+            return res.status(400).json({ message: 'خطأ أثناء رفع الملف: ' + err.message });
         }
 
         const fileTitle = req.body.fileTitle?.trim();
@@ -45,24 +40,16 @@ exports.createData = async (req, res) => {
         }
 
         try {
-            const relativePath = path.relative(process.cwd(), uploadedFile.path);
             const newData = {
                 fileTitle,
-                uploadedFile: relativePath 
+                uploadedFile: uploadedFile.path // حفظ مسار الملف
             };
 
             const dbData = await Data.create(newData);
 
-            // Return the stored data, including the file content
-            const fileContent = fs.readFileSync(uploadedFile.path); // Read file content
-            const base64File = fileContent.toString('base64'); // Convert to base64 for frontend use
-
             res.status(200).json({ 
                 message: 'تم تحميل الملف بنجاح', 
-                data: { 
-                    fileTitle: dbData.fileTitle, 
-                    uploadedFile: base64File // Send file as base64
-                } 
+                data: dbData // إرسال البيانات المخزنة
             });
         } catch (error) {
             console.error('Error creating data:', error);
@@ -71,40 +58,18 @@ exports.createData = async (req, res) => {
     });
 };
 
-
-
-
-// get
-// GET endpoint to retrieve uploaded files
+// GET endpoint لاسترجاع الملفات المرفوعة
 exports.getData = async (req, res) => {
     try {
-        // Fetch all records from the database
-        const dataRecords = await Data.find(); // Assuming Data is your Mongoose model
+        const dataRecords = await Data.find(); // جلب كافة السجلات من قاعدة البيانات
 
-        // If no records are found, return an empty array
         if (!dataRecords || dataRecords.length === 0) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'لا توجد ملفات تم تحميلها بعد.', 
-                data: [] // Consistent response structure
-            });
+            return res.status(404).json({ success: false, message: 'لا توجد ملفات تم تحميلها بعد.', data: [] });
         }
 
-        // Return the retrieved records
-        res.status(200).json({ 
-            success: true, 
-            message: 'تم استرجاع الملفات بنجاح', 
-            data: dataRecords 
-        });
+        res.status(200).json({ success: true, message: 'تم استرجاع الملفات بنجاح', data: dataRecords });
     } catch (error) {
         console.error('Error retrieving data:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'خطأ في قاعدة البيانات: ' + error.message 
-        });
+        res.status(500).json({ success: false, message: 'خطأ في قاعدة البيانات: ' + error.message });
     }
 };
-
-
-
-
